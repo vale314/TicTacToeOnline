@@ -1,36 +1,73 @@
-import React, { Fragment } from "react";
+import React from 'react';
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from 'reactstrap';
 
 import { Link } from 'react-router-dom'
-import { Navbar, NavItem } from 'react-materialize';
 
+export default class authNavbar extends React.Component {
+  constructor(props) {
+    super(props);
 
-class AuthNavbar extends React.Component {
-
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      isOpen: false
+    };
+  }
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  }
   render() {
     return (
-      <Fragment>
-        <Navbar centerLogo >
-          <Link to="/">
-            <NavItem href="components.html">
-              Home
-            </NavItem>
+      <div>
+        <Navbar color="light" light expand="md">
+          <Link to='/'>
+            <NavbarBrand>TicTacToe</NavbarBrand>
           </Link>
-
-          <Link to="/login">
-            <NavItem >
-              Login
-            </NavItem>
-          </Link>
-          <Link to="/signup">
-            <NavItem href="components.html">
-              SignUp
-            </NavItem>
-          </Link>
-
+          <NavbarToggler onClick={this.toggle} />
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav className="ml-auto" navbar>
+              <NavItem componentClass='span'>
+                <Link to='/login'>
+                  <NavLink>Login</NavLink>
+                </Link>
+              </NavItem>
+              <Link to='/signup'>
+                <NavLink>SignUp</NavLink>
+              </Link>
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret>
+                  Options
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <DropdownItem>
+                    Option 1
+                  </DropdownItem>
+                  <DropdownItem>
+                    Option 2
+                  </DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem>
+                    Reset
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </Nav>
+          </Collapse>
         </Navbar>
-      </Fragment>
-    )
+      </div>
+    );
   }
 }
-
-export default AuthNavbar;

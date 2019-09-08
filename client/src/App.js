@@ -7,12 +7,13 @@ import store from './store';
 import './App.css';
 import './components/pages/home';
 
-import 'materialize-css/dist/css/materialize.min.css'
-import 'materialize-css/dist/js/materialize.min.js'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import AuthNavbar from './components/authNavbar.jsx'
 import Home from './components/pages/home';
 import notFound from './components/pages/notFound';
+import Login from './components/pages/login'
+import SignUp from './components/pages/signUp'
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
         <AuthNavbar/>
         <Switch>
           <Route exact  path='/' component={Home} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path='/signup' component={SignUp} />
           <Route component={notFound} />
         </Switch>
       </Router>  
