@@ -27,7 +27,6 @@ const Contacts = ({api}) => {
                 <CSSTransition
                   key={contact._id}
                   timeout={500}
-                  classNames='item'
                 >
                   <ContactItem contact={contact} api={api} />
                 </CSSTransition>
@@ -36,7 +35,6 @@ const Contacts = ({api}) => {
                 <CSSTransition
                   key={contact._id}
                   timeout={500}
-                  classNames='item'
                 >
                   <ContactItem contact={contact} api={api} />
                 </CSSTransition>

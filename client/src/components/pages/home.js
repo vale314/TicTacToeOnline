@@ -52,7 +52,6 @@ const Home = () => {
 
   useEffect(() => {
     socket.on('msg-private', payload => {
-      console.log(payload)
       setUser({ ...state, msg: [...state.msg, payload] });
     });
     // eslint-disable-next-line

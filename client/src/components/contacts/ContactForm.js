@@ -1,5 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import ContactContext from '../../context/contact/contactContext';
+import {  Input, Button } from 'reactstrap';
+
 
 const ContactForm = () => {
   const contactContext = useContext(ContactContext);
@@ -50,14 +52,14 @@ const ContactForm = () => {
       <h2 className='text-primary'>
         {current ? 'Edit Contact' : 'Add Contact'}
       </h2>
-      <input
+      <Input
         type='text'
         placeholder='Name'
         name='name'
         value={name}
         onChange={onChange}
       />
-      <input
+      <Input
         type='email'
         placeholder='Email'
         name='email'
@@ -65,7 +67,7 @@ const ContactForm = () => {
         onChange={onChange}
         disabled
       />
-      <input
+      <Input
         type='text'
         placeholder='Phone'
         name='phone'
@@ -73,7 +75,7 @@ const ContactForm = () => {
         onChange={onChange}
       />
       <h5>Contact Type</h5>
-      <input
+      <Input
         type='radio'
         name='type'
         value='personal'
@@ -81,7 +83,7 @@ const ContactForm = () => {
         onChange={onChange}
       />{' '}
       Personal{' '}
-      <input
+      <Input
         type='radio'
         name='type'
         value='professional'
@@ -90,7 +92,7 @@ const ContactForm = () => {
       />{' '}
       Professional
       <div>
-        <input
+        <Input
           type='submit'
           value={current ? 'Update Contact' : 'Add Contact'}
           className='btn btn-primary btn-block'
@@ -98,9 +100,9 @@ const ContactForm = () => {
       </div>
       {current && (
         <div>
-          <button className='btn btn-light btn-block' onClick={clearAll}>
+          <Button className='btn btn-light btn-block' onClick={clearAll}>
             Clear
-          </button>
+          </Button>
         </div>
       )}
     </form>

@@ -9,6 +9,8 @@ import Users from './components/pages/AllUsers';
 import Alerts from './components/layout/Alerts';
 import PrivateRoute from './components/routing/PrivateRoute';
 import Messages from './components/pages/messages';
+import Game from './components/pages/demoGame/demo';
+import Email from './components/pages/email';
 
 import ContactState from './context/contact/ContactState';
 import AuthState from './context/auth/AuthState';
@@ -42,9 +44,11 @@ const App = () => {
                       <PrivateRoute exact path='/' component={Home} />
                       <PrivateRoute exact path='/users' component={Users} />
                       <PrivateRoute exact path='/messages' component={Messages} />
+                      <PrivateRoute exact path='/email' component={Email} />
                       <Route exact path='/about' component={About} />
                       <Route exact path='/register' component={Register} />
                       <Route exact path='/login' component={Login} />
+                      <Route exact pacth='/one-to-one' component={Game} />
                     </Switch>
                   </div>
                 </Fragment>

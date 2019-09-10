@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useEffect } from 'react';
 import ContactContext from '../../context/contact/contactContext';
+import {  Input } from 'reactstrap';
 
 const ContactFilter = () => {
   const contactContext = useContext(ContactContext);
@@ -23,7 +24,7 @@ const ContactFilter = () => {
 
   return (
     <form>
-      <input
+      <Input
         ref={text}
         type='text'
         placeholder='Filter Contacts...'

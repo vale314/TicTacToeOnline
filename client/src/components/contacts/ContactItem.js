@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ContactContext from '../../context/contact/contactContext';
 import AlertContext from '../../context/alert/alertContext';
 import MessageContext from '../../context/message/messageContext';
+import {  Input, Button } from 'reactstrap';
 
 const ContactItem = ({ contact, api }) => {
   const contactContext = useContext(ContactContext);
@@ -40,29 +41,29 @@ const ContactItem = ({ contact, api }) => {
 
   const activedContacts = (
     <Fragment>
-      <button
+      <Button
         className='btn btn-dark btn-sm'
         onClick={() => setCurrentMessage(contact)}
         >
         Enviar Msj
-      </button>
-      <button
+      </Button>
+      <Button
         className='btn btn-dark btn-sm'
         onClick={() => setCurrent(contact)}
         >
         Edit
-      </button>
-      <button className='btn btn-danger btn-sm' onClick={onDelete}>
+      </Button>
+      <Button className='btn btn-danger btn-sm' onClick={onDelete}>
         Delete
-      </button>
+      </Button>
     </Fragment>  
   )
 
   const activedUsers = (
     <Fragment>
-      <button className='btn btn-danger btn-sm' onClick={sendContact}>
+      <Button className='btn btn-danger btn-sm' onClick={sendContact}>
           Add Contact
-      </button>
+      </Button>
     </Fragment>  
   )
   
