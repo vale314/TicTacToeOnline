@@ -14,9 +14,12 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  fecha: {
-    type: Date,
-    default: Date.now
+  phone: {
+    type: String
+  },
+  type: {
+    type: String,
+    default: 'personal'
   },
   date: {
     type: Date,

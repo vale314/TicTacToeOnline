@@ -1,7 +1,7 @@
 {
-  "name": "onlinegametic",
+  "name": "contact-keeper",
   "version": "1.0.0",
-  "description": "",
+  "description": "Contact manager app",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -12,21 +12,19 @@
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [],
-  "author": "Valentin Alejadro Ruiz Ortiz",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "bootstrap": "^4.3.1",
-    "config": "^3.2.2",
+    "config": "^3.1.0",
     "express": "^4.17.1",
-    "express-validator": "^6.2.0",
+    "express-validator": "^5.3.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.6.11",
-    "node-sass": "^4.12.0",
-    "reactstrap": "^8.0.1"
+    "mongoose": "^5.5.11",
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
-    "concurrently": "^4.1.2",
+    "concurrently": "^4.1.0",
     "nodemon": "^1.19.1"
   }
 }

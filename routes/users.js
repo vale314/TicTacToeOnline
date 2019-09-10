@@ -3,9 +3,26 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-const { check, validationResult } = require('express-validator');
+const auth = require('../middleware/auth');
+const { check, validationResult } = require('express-validator/check');
 
 const User = require('../models/User');
+
+
+// @route     GET api/users
+// @desc      Get all a users
+// @access    Private
+router.get('/', auth, async (req, res) => {
+  try {
+    const users = await User.find().sort({
+      date: -1
+    });
+    return res.json(users);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 // @route     POST api/users
 // @desc      Regiter a user
@@ -17,10 +34,12 @@ router.post(
       .not()
       .isEmpty(),
     check('email', 'Please include a valid email').isEmail(),
+    check('phone','Please include a phone with 10 or more characters').isLength({min:10}),
+    check('type','Please Add A Type').not().isEmpty(),
     check(
       'password',
       'Please enter a password with 6 or more characters'
-    ).isLength({ min: 6 })
+    ).isLength({ min: 6 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -28,7 +47,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password } = req.body;
+    const { name, email, phone, type, password } = req.body;
 
     try {
       let user = await User.findOne({ email });
@@ -40,6 +59,8 @@ router.post(
       user = new User({
         name,
         email,
+        phone,
+        type,
         password
       });
 

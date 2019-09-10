@@ -1,4 +1,4 @@
 {
-    "mongoURI":"mongodb+srv://valentin:contrasena@tictactoegameonline-z7cdj.mongodb.net/test?retryWrites=true&w=majority",
-    "secret": "secret"
+  "mongoURI": "mongodb+srv://valentin:contrasena@tictactoegameonline-z7cdj.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtSecret": "secret"
 }
