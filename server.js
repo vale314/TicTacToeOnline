@@ -102,7 +102,6 @@ io.on('connection', function (socket) {
         });
 
         io.to(data.room).emit('active',users);
-        console.log(users)
       });
     })
 
@@ -115,15 +114,18 @@ io.on('connection', function (socket) {
   
   socket.on('msg-room', (data) => {
     idToName(data.token, (name) => {
-      io.sockets.emit('msg', {
-        user: name,
-        body: data.text
-      });
-
+      
       io.in(data.room).emit('msg-room', {name: name ,body: data.text});
       
     })
   })  
+
+  socket.on('online-game-room', (data) => {
+          
+      console.log(data)
+
+      io.in(data.room).emit('online-game-room', {body: data.data});      
+    })
 
   socket.on('msg-private', (data) => {
     io.sockets.to(`${data.id}`).emit('msg-private', data.text);

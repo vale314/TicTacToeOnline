@@ -7,6 +7,7 @@ import AlertContext from '../../context/alert/alertContext';
 import AuthContext from '../../context/auth/authContext';
 import ChatContext from '../../context/chat/chatContext';
 
+import Board from '../../components/Game/index';
 
 import io from 'socket.io-client';
 const socket = io('http://localhost:5000');
@@ -45,6 +46,7 @@ const Game = (props) => {
 
   useEffect(() => {
     socket.on('msg-room', payload => {
+      
       setUser({ ...user, msg: [...user.msg, payload] });
     });
     // eslint-disable-next-line
@@ -82,6 +84,17 @@ const Game = (props) => {
 
   return (
     <Fragment>
+
+      <div className="game d-flex justify-content-center">
+        <div className="game-board">
+          <Board />
+        </div>
+        <div className="game-info">
+          <div>{/* status */}</div>
+          <ol>{/* TODO */}</ol>
+        </div>
+      </div>
+
       <div>
         <h1>
           ID_ROOM: {id_room}
