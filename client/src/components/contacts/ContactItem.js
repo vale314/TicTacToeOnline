@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ContactContext from '../../context/contact/contactContext';
 import AlertContext from '../../context/alert/alertContext';
 import MessageContext from '../../context/message/messageContext';
-import {  Input, Button } from 'reactstrap';
+import { Button } from 'reactstrap';
 
 const ContactItem = ({ contact, api }) => {
   const contactContext = useContext(ContactContext);

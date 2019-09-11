@@ -21,10 +21,6 @@ const MessageFilter = () => {
     }
   };
 
-  const onClick = () =>{
-    
-  }
-
   return (
     <Fragment>
       <form>

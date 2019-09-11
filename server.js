@@ -34,50 +34,47 @@ const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
-var users = [];
 
 
 io.on('connection', function (socket) {
   // console.log("Conectado ", socket.id)
-  
+
   // console.log(io.sockets.sockets[socket.id].id)
 
   socket.on('msg', (data) => {
-    idToName(data.token,(name)=>{
+    idToName(data.token, (name) => {
       io.sockets.emit('msg', {
         user: name,
         body: data.text
       });
     })
   })
-  
-  
-  socket.on('active',(data)=>{
-    idToName(data.token,(name)=>{
+
+
+  socket.on('active', (data) => {
+    var users = []
+    idToName(data.token, (name) => {
+
+      socket.nickname = name;
       
-      if(users === undefined || users.length == 0){
-        users.push({name:name, id:socket.id})
-      }
+      io.clients((error, clients) => {
+        if (error) throw error;
+        clients.map((client)=>{
+          if(io.sockets.sockets[client].nickname !== undefined){
+            users.push({
+              name:io.sockets.sockets[client].nickname,
+              id:io.sockets.sockets[client].id
+            })          
+          }
+        });
 
-      users.map(user =>
-        user.name === name ? {name:name, id:socket.id} : user
-      )
-
-      var find = users.find(user =>{
-        if(user.name == name)
-          return true;
-      })
-
-      if(find === undefined){
-        users.push({name:name, id:socket.id})
-      }
-      
-      console.log(users)
-      io.sockets.emit('active', users);
+        io.sockets.emit('active', users);
+        console.log(users)
+      });
     })
   })
 
-  socket.on('msg-private',(data)=>{
+  socket.on('msg-private', (data) => {
     io.sockets.to(`${data.id}`).emit('msg-private', data.text);
   })
 

@@ -16,8 +16,9 @@ import ContactState from './context/contact/ContactState';
 import AuthState from './context/auth/AuthState';
 import AlertState from './context/alert/AlertState';
 import setAuthToken from './utils/setAuthToken';
-import MessageState from './context/message/MessageState'
-import ChatState from './context/chat/ChatState'
+import MessageState from './context/message/MessageState';
+import ChatState from './context/chat/ChatState';
+import GameOnline from './components/pages/game';
 
 // import './App.css';
 
@@ -45,6 +46,7 @@ const App = () => {
                       <PrivateRoute exact path='/users' component={Users} />
                       <PrivateRoute exact path='/messages' component={Messages} />
                       <PrivateRoute exact path='/email' component={Email} />
+                      <PrivateRoute exact path='/game' component={GameOnline} />
                       <Route exact path='/about' component={About} />
                       <Route exact path='/register' component={Register} />
                       <Route exact path='/login' component={Login} />
@@ -54,7 +56,7 @@ const App = () => {
                 </Fragment>
               </Router>
             </AlertState>
-          </MessageState>  
+          </MessageState>
         </ContactState>
       </ChatState>
     </AuthState>
