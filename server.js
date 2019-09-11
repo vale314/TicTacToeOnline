@@ -75,11 +75,56 @@ io.on('connection', function (socket) {
         console.log(users)
       });
     })
+
   })
 
   socket.on('disconnected', () => {
     socket.disconnect(true);
   })
+
+  socket.on('exit', (data) => {
+    socket.leave(data.room);
+
+    var users = []
+    idToName(data.token, (name) => {
+
+      socket.nickname = name;
+      
+      io.clients((error, clients) => {
+        if (error) throw error;
+        clients.map((client)=>{
+          if(io.sockets.sockets[client].nickname !== undefined && io.sockets.sockets[client].nickname !== "user"){
+            users.push({
+              name:io.sockets.sockets[client].nickname,
+              id:io.sockets.sockets[client].id
+            })          
+          }
+        });
+
+        io.to(data.room).emit('active',users);
+        console.log(users)
+      });
+    })
+
+  })
+
+  socket.on('login-room', (data) => {
+    socket.join(data);
+  })
+
+  
+  socket.on('msg-room', (data) => {
+    idToName(data.token, (name) => {
+      io.sockets.emit('msg', {
+        user: name,
+        body: data.text
+      });
+
+      io.in(data.room).emit('msg-room', {name: name ,body: data.text});
+      
+    })
+  })  
+
   socket.on('msg-private', (data) => {
     io.sockets.to(`${data.id}`).emit('msg-private', data.text);
   })

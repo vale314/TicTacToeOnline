@@ -1,14 +1,24 @@
 import React, { useContext, useEffect, Fragment, useState } from 'react';
+
 import { Input, Button } from 'reactstrap';
+
 import AlertContext from '../../context/alert/alertContext';
 
 import AuthContext from '../../context/auth/authContext';
+import ChatContext from '../../context/chat/chatContext';
 
-const Game = ({socket, id}) => {
+
+import io from 'socket.io-client';
+const socket = io('http://localhost:5000');
+
+const Game = (props) => {
   const authContext = useContext(AuthContext);
   const alertContext = useContext(AlertContext);
+  const chatContext = useContext(ChatContext);
 
   const { setAlert } = alertContext;
+
+  const { id_room } = chatContext;
 
   const [user, setUser] = useState({
     text: '',
@@ -23,12 +33,24 @@ const Game = ({socket, id}) => {
     // eslint-disable-next-line
   }, []);
 
+
   useEffect(() => {
-    socket.on('msg-private', payload => {
+    if (id_room === '') {
+      chatContext.generateIdRoom();
+    } else {
+      socket.emit('login-room', id_room);
+    }
+    // eslint-disable-next-line
+  }, [id_room !== ''])
+
+  useEffect(() => {
+    socket.on('msg-room', payload => {
       setUser({ ...user, msg: [...user.msg, payload] });
     });
     // eslint-disable-next-line
   }, [msg])
+
+
 
   const onChange = e => setUser({
     ...user, [e.target.name]: e.target.value
@@ -39,19 +61,36 @@ const Game = ({socket, id}) => {
     if (text === '') {
       setAlert('Please fill in all fields', 'danger');
     } else {
-      socket.emit('msg', {
+      socket.emit('msg-room', {
         text,
+        room: id_room,
         token: localStorage.getItem('token')
       });
+      setUser({ ...user, text: '' })
     }
   };
 
+  const onClickExit = () => {
+
+    socket.emit('exit', {
+      room: 'home'
+    });
+
+    chatContext.deleteIdRoom();
+    props.history.push({ pathname: '/' })
+  }
+
   return (
     <Fragment>
+      <div>
+        <h1>
+          ID_ROOM: {id_room}
+        </h1>
+      </div>
       {msg.map((message, index) => {
         return (
           <li key={index}>
-            <b>{message.user}: {message.body}</b>
+            <b>{message.name}: {message.body}</b>
           </li>
         )
       })};
@@ -65,6 +104,7 @@ const Game = ({socket, id}) => {
         />
         <Button color="primary" onClick={onSubmit}>Sumbit</Button>
       </form>
+      <Button color="primary" onClick={onClickExit}>Exit</Button>
     </Fragment>
   );
 };
