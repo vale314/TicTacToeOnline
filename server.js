@@ -52,6 +52,9 @@ io.on('connection', function (socket) {
 
 
   socket.on('active', (data) => {
+    
+    socket.join(data.room);
+
     var users = []
     idToName(data.token, (name) => {
 
@@ -60,7 +63,7 @@ io.on('connection', function (socket) {
       io.clients((error, clients) => {
         if (error) throw error;
         clients.map((client)=>{
-          if(io.sockets.sockets[client].nickname !== undefined){
+          if(io.sockets.sockets[client].nickname !== undefined && io.sockets.sockets[client].nickname !== "user"){
             users.push({
               name:io.sockets.sockets[client].nickname,
               id:io.sockets.sockets[client].id
@@ -68,12 +71,15 @@ io.on('connection', function (socket) {
           }
         });
 
-        io.sockets.emit('active', users);
+        io.to(data.room).emit('active',users);
         console.log(users)
       });
     })
   })
 
+  socket.on('disconnected', () => {
+    socket.disconnect(true);
+  })
   socket.on('msg-private', (data) => {
     io.sockets.to(`${data.id}`).emit('msg-private', data.text);
   })

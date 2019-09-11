@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
 import ContactContext from '../../context/contact/contactContext';
+import ChatContext from '../../context/chat/chatContext';
 
 import {
   Collapse,
@@ -16,13 +17,19 @@ import {
 const NavbarLayout = ({ title, icon }) => {
   const authContext = useContext(AuthContext);
   const contactContext = useContext(ContactContext);
+  const chatContext = useContext(ChatContext);
+
 
   const { isAuthenticated, logout, user } = authContext;
   const { clearContacts } = contactContext;
+  const { socket } = chatContext;
+
 
   const onLogout = () => {
     logout();
     clearContacts();
+
+    console.log(socket)
   };
 
   const [isOpen, setOpen] = useState({

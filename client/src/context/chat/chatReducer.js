@@ -8,8 +8,8 @@ export default (state, action) => {
         case STARTSESSION:
             return {
                 ...state,
-                connected: true,
-                socket: action.payload
+                socket: action.payload,
+                connected: true
             };
         case ENDTOSESSION:
             return {

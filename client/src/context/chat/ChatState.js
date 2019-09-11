@@ -17,8 +17,8 @@ const ChatState = props => {
   const [state, dispatch] = useReducer(chatReducer, initialState);
 
   // Load User
-  const startSession = async (socket) => {
-    dispatch({ type: STARTSESSION, payload:socket })
+  const startSession = async (payload) => {
+    await dispatch({ type: STARTSESSION, payload:payload })
   };
 
   // Clear Errors

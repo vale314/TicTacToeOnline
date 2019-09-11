@@ -1,15 +1,11 @@
 import React, { useContext, useEffect, Fragment, useState } from 'react';
 import AuthContext from '../../context/auth/authContext';
 import ChatContext from '../../context/chat/chatContext';
-import Game from './game';
-
-import { Redirect, Route } from 'react-router-dom';
 
 import { ListGroup, ListGroupItem, Button, } from 'reactstrap';
 
 
 import io from 'socket.io-client';
-
 const socket = io('http://localhost:5000');
 
 const Home = () => {
@@ -31,7 +27,8 @@ const Home = () => {
 
   useEffect(() => {
     socket.emit('active', {
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      room: 'home'
     });
   }, []);
 
@@ -45,6 +42,8 @@ const Home = () => {
   const onClick = (e) => {
     const id = e.currentTarget.value;
     console.log(id);
+
+    
   }
 
   const listUsers = (
@@ -53,7 +52,7 @@ const Home = () => {
         {users.map((user, index) => {
           return (
             <ListGroupItem key={index} className="d-flex justify-content-between"> {user.name}
-              <Button color="primary" key={user.id} value={user.id} onClick={<Game />}>Start</Button>
+              <Button color="primary" key={user.id} value={user.id} onClick={onClick}>Start</Button>
             </ListGroupItem>
           )
         })
