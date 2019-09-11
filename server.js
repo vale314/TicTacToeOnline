@@ -34,7 +34,7 @@ const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
-
+var nolose = true;
 
 io.on('connection', function (socket) {
   // console.log("Conectado ", socket.id)
@@ -72,7 +72,6 @@ io.on('connection', function (socket) {
         });
 
         io.to(data.room).emit('active',users);
-        console.log(users)
       });
     })
 
@@ -114,18 +113,21 @@ io.on('connection', function (socket) {
   
   socket.on('msg-room', (data) => {
     idToName(data.token, (name) => {
-      
+
       io.in(data.room).emit('msg-room', {name: name ,body: data.text});
       
     })
   })  
 
   socket.on('online-game-room', (data) => {
-          
-      console.log(data)
-
       io.in(data.room).emit('online-game-room', {body: data.data});      
     })
+
+  socket.on('gato-o-cruz',(data)=>{
+    
+    socket.to(data.room).emit('gato-o-cruz', nolose);
+    nolose = !nolose;
+  })  
 
   socket.on('msg-private', (data) => {
     io.sockets.to(`${data.id}`).emit('msg-private', data.text);

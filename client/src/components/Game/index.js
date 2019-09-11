@@ -29,15 +29,23 @@ const Board = () => {
 
     useEffect(() => {
         socket.emit('login-room', id_room);
-      }, [id_room]);
+    }, [id_room]);
 
     useEffect(() => {
         socket.on('online-game-room', payload => {
-          console.log(payload)
-          setState({ ...state, squares:payload.body });
+            setState({ ...state, squares: payload.body });
+        });
+
+        socket.on('gato-o-cruz', payload => {
+            console.log(payload)
+            setState({ ...state, xIsNext: payload });
+        });
+
+        socket.emit('gato-o-cruz', {
+            room: id_room
         });
         // eslint-disable-next-line
-      },[])
+    }, [])
 
     const handleClick = (i) => {
         const squaresS = squares.slice();
@@ -46,8 +54,7 @@ const Board = () => {
         }
         squaresS[i] = xIsNext ? 'X' : 'O';
         setState({
-            squares: squaresS,
-            xIsNext: !xIsNext,
+            squares: squaresS
         });
 
         socket.emit('online-game-room', {
