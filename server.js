@@ -52,26 +52,26 @@ io.on('connection', function (socket) {
 
 
   socket.on('active', (data) => {
-    
+
     socket.join(data.room);
 
     var users = []
     idToName(data.token, (name) => {
 
       socket.nickname = name;
-      
+
       io.clients((error, clients) => {
         if (error) throw error;
-        clients.map((client)=>{
-          if(io.sockets.sockets[client].nickname !== undefined && io.sockets.sockets[client].nickname !== "user"){
+        clients.map((client) => {
+          if (io.sockets.sockets[client].nickname !== undefined && io.sockets.sockets[client].nickname !== "user") {
             users.push({
-              name:io.sockets.sockets[client].nickname,
-              id:io.sockets.sockets[client].id
-            })          
+              name: io.sockets.sockets[client].nickname,
+              id: io.sockets.sockets[client].id
+            })
           }
         });
 
-        io.to(data.room).emit('active',users);
+        io.to(data.room).emit('active', users);
       });
     })
 
@@ -88,19 +88,19 @@ io.on('connection', function (socket) {
     idToName(data.token, (name) => {
 
       socket.nickname = name;
-      
+
       io.clients((error, clients) => {
         if (error) throw error;
-        clients.map((client)=>{
-          if(io.sockets.sockets[client].nickname !== undefined && io.sockets.sockets[client].nickname !== "user"){
+        clients.map((client) => {
+          if (io.sockets.sockets[client].nickname !== undefined && io.sockets.sockets[client].nickname !== "user") {
             users.push({
-              name:io.sockets.sockets[client].nickname,
-              id:io.sockets.sockets[client].id
-            })          
+              name: io.sockets.sockets[client].nickname,
+              id: io.sockets.sockets[client].id
+            })
           }
         });
 
-        io.to(data.room).emit('active',users);
+        io.to(data.room).emit('active', users);
       });
     })
 
@@ -110,24 +110,24 @@ io.on('connection', function (socket) {
     socket.join(data);
   })
 
-  
   socket.on('msg-room', (data) => {
     idToName(data.token, (name) => {
 
-      io.in(data.room).emit('msg-room', {name: name ,body: data.text});
-      
+      io.in(data.room).emit('msg-room', { name: name, body: data.text });
+
     })
-  })  
+  })
 
   socket.on('online-game-room', (data) => {
-      io.in(data.room).emit('online-game-room', {body: data.data});      
-    })
+    io.in(data.room).emit('online-game-room', { body: data.data });
 
-  socket.on('gato-o-cruz',(data)=>{
-    
-    socket.to(data.room).emit('gato-o-cruz', nolose);
-    nolose = !nolose;
-  })  
+    // io.sockets.to(`${socket.id}`).emit('gato-o-cruz', !data.isX);      
+
+  })
+
+  socket.on('gato-o-cruz', (data) => {
+    socket.to(data.room).emit('gato-o-cruz', !data.isx);
+  });
 
   socket.on('msg-private', (data) => {
     io.sockets.to(`${data.id}`).emit('msg-private', data.text);

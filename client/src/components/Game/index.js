@@ -2,6 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import io from 'socket.io-client';
 import ChatContext from '../../context/chat/chatContext';
 
+import { Button } from 'reactstrap';
+
+
 const socket = io('http://localhost:5000');
 
 const Square = (props) => {
@@ -32,20 +35,16 @@ const Board = () => {
     }, [id_room]);
 
     useEffect(() => {
+        
         socket.on('online-game-room', payload => {
-            setState({ ...state, squares: payload.body });
-        });
 
-        socket.on('gato-o-cruz', payload => {
-            console.log(payload)
-            setState({ ...state, xIsNext: payload });
-        });
+            setState({ ...state, squares: payload.body});
 
-        socket.emit('gato-o-cruz', {
-            room: id_room
         });
+        
+
         // eslint-disable-next-line
-    }, [])
+    }, []);
 
     const handleClick = (i) => {
         const squaresS = squares.slice();
@@ -54,14 +53,14 @@ const Board = () => {
         }
         squaresS[i] = xIsNext ? 'X' : 'O';
         setState({
-            squares: squaresS
+            ...state,
+            squares: squaresS,
         });
 
         socket.emit('online-game-room', {
             room: id_room,
             data: squaresS
         });
-
     }
 
     const renderSquare = (i) => {
@@ -103,25 +102,35 @@ const Board = () => {
         }
     }
 
+    const onClickChange = () => {
+        setState({ ...state, xIsNext: !xIsNext })
+        localStorage.setItem('word',!xIsNext);
+    }
+
+
     return (
         <div>
-            {render}
-            <div className="status">{status}</div>
-            <div className="board-row">
-                {renderSquare(0)}
-                {renderSquare(1)}
-                {renderSquare(2)}
+            <div>
+                {render}
+                <div className="status">{status}</div>
+                <div className="board-row">
+                    {renderSquare(0)}
+                    {renderSquare(1)}
+                    {renderSquare(2)}
+                </div>
+                <div className="board-row">
+                    {renderSquare(3)}
+                    {renderSquare(4)}
+                    {renderSquare(5)}
+                </div>
+                <div className="board-row">
+                    {renderSquare(6)}
+                    {renderSquare(7)}
+                    {renderSquare(8)}
+                </div>
             </div>
-            <div className="board-row">
-                {renderSquare(3)}
-                {renderSquare(4)}
-                {renderSquare(5)}
-            </div>
-            <div className="board-row">
-                {renderSquare(6)}
-                {renderSquare(7)}
-                {renderSquare(8)}
-            </div>
+            <Button color="primary" onClick={onClickChange} value={xIsNext}>Exit</Button>
+            <h1> {xIsNext ? <div>X</div> : <div>O</div>} </h1>
         </div>
     );
 }
