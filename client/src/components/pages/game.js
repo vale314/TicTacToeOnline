@@ -10,7 +10,7 @@ import ChatContext from '../../context/chat/chatContext';
 import Board from '../../components/Game/index';
 
 import io from 'socket.io-client';
-const socket = io('http://165.227.83.64:3000/');
+const socket = io('http://localhost:5000');
 
 const Game = (props) => {
   const authContext = useContext(AuthContext);
