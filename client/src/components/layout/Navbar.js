@@ -84,7 +84,7 @@ NavbarLayout.propTypes = {
 };
 
 NavbarLayout.defaultProps = {
-  title: 'Contact Keeper',
+  title: 'Tic Tac Toe',
   icon: 'fas fa-id-card-alt'
 };
 
