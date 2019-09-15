@@ -7,7 +7,7 @@ import { ListGroup, ListGroupItem, Button, Input } from 'reactstrap';
 
 
 import io from 'socket.io-client';
-const socket = io('http://localhost:5000');
+const socket = io('http://localhost:80');
 
 const Home = (props) => {
   const authContext = useContext(AuthContext);

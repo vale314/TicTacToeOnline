@@ -5,7 +5,7 @@ import ChatContext from '../../context/chat/chatContext';
 import { Button } from 'reactstrap';
 
 
-const socket = io('http://localhost:5000');
+const socket = io('http://localhost:80');
 
 const Square = (props) => {
     return (
