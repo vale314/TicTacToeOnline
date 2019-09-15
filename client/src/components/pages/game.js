@@ -10,7 +10,7 @@ import ChatContext from '../../context/chat/chatContext';
 import Board from '../../components/Game/index';
 
 import io from 'socket.io-client';
-const socket = io('http://localhost:80');
+const socket = io('https://obscure-hollows-37712.herokuapp.com');
 
 const Game = (props) => {
   const authContext = useContext(AuthContext);

@@ -7,7 +7,7 @@ import { ListGroup, ListGroupItem, Button, Input } from 'reactstrap';
 
 
 import io from 'socket.io-client';
-const socket = io('http://localhost:80');
+const socket = io('https://obscure-hollows-37712.herokuapp.com');
 
 const Home = (props) => {
   const authContext = useContext(AuthContext);

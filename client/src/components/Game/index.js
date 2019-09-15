@@ -5,7 +5,7 @@ import ChatContext from '../../context/chat/chatContext';
 import { Button } from 'reactstrap';
 
 
-const socket = io('http://localhost:80');
+const socket = io('https://obscure-hollows-37712.herokuapp.com');
 
 const Square = (props) => {
     return (

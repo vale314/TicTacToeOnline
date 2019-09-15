@@ -5,7 +5,7 @@ import AlertContext from '../../context/alert/alertContext';
 import AuthContext from '../../context/auth/authContext';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:80');
+const socket = io('https://obscure-hollows-37712.herokuapp.com');
 
 const Messages = () => {
   const authContext = useContext(AuthContext);
