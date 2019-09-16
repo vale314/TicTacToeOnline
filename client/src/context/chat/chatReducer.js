@@ -3,7 +3,8 @@ import {
     ENDTOSESSION,
     GENERATEIDROOM,
     UPDATEIDROOM,
-    DELETEIDROOM
+    DELETEIDROOM,
+    CHANGEVAR
 } from '../types';
 
 export default (state, action) => {
@@ -31,9 +32,14 @@ export default (state, action) => {
                 id_room: action.payload
             }
         case DELETEIDROOM:
-            return{
+            return {
                 ...state,
                 id_room: ''
+            }
+        case CHANGEVAR:
+            return {
+                ...state,
+                isX: action.payload
             }
         default:
             return state;

@@ -9,14 +9,16 @@ import {
   STARTSESSION,
   GENERATEIDROOM,
   UPDATEIDROOM,
-  DELETEIDROOM
+  DELETEIDROOM,
+  CHANGEVAR
 } from '../types';
 
 const ChatState = props => {
   const initialState = {
     connected:false,
     socket: '',
-    id_room:''
+    id_room:'',
+    isX: true
   };
 
   const [state, dispatch] = useReducer(chatReducer, initialState);
@@ -31,6 +33,10 @@ const ChatState = props => {
      dispatch({ type: STARTSESSION, payload:payload })
   };
 
+  const changeVar = (payload) => {
+    dispatch({ type: CHANGEVAR, payload:payload })
+ };
+
   // Clear Errors
   const endSession = () => dispatch({ type: ENDTOSESSION });
 
@@ -43,12 +49,14 @@ const ChatState = props => {
       value={{
         connected: state.connected,
         id_room: state.id_room,
+        isX: state.isX,
         socket_Id:state.socket,
         startSession,
         endSession,
         generateIdRoom,
         updateIdRoom,
-        deleteIdRoom
+        deleteIdRoom,
+        changeVar
       }}
     >
       {props.children}

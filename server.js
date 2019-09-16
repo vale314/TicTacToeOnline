@@ -34,8 +34,6 @@ const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
-var nolose = true;
-
 io.on('connection', function (socket) {
   // console.log("Conectado ", socket.id)
 
@@ -108,6 +106,10 @@ io.on('connection', function (socket) {
 
   socket.on('login-room', (data) => {
     socket.join(data);
+  })
+
+  socket.on('whatIs',(data)=>{
+    io.in(data.room).emit('whatIs', { isX:!data.isX });
   })
 
   socket.on('msg-room', (data) => {

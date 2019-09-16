@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import io from 'socket.io-client';
 import ChatContext from '../../context/chat/chatContext';
+import packageJson from '../../../package.json';
 
-import { Button } from 'reactstrap';
+import './styles.css'
+
+// import { Button } from 'reactstrap';
 
 
-const socket = io('https://obscure-hollows-37712.herokuapp.com');
+const socket = io(packageJson.proxy);
 
 const Square = (props) => {
     return (
@@ -20,15 +23,15 @@ const Board = () => {
 
     const chatContext = useContext(ChatContext);
 
-
+    const { id_room, isX } = chatContext;
+    
     const [state, setState] = useState({
         squares: Array(9).fill(null),
-        xIsNext: true,
+        xIsNext: isX,
         status: ''
     });
-
-    const { squares, xIsNext, status } = state;
-    const { id_room } = chatContext;
+    
+    const { squares, status } = state;
 
     useEffect(() => {
         socket.emit('login-room', id_room);
@@ -39,19 +42,23 @@ const Board = () => {
         socket.on('online-game-room', payload => {
 
             setState({ ...state, squares: payload.body});
-
+            return()=>{
+                socket.close()
+            }
         });
-        
-
         // eslint-disable-next-line
     }, []);
+
+    useEffect(()=>{
+        render();
+    },[squares])
 
     const handleClick = (i) => {
         const squaresS = squares.slice();
         if (calculateWinner(squaresS) || squaresS[i]) {
             return;
         }
-        squaresS[i] = xIsNext ? 'X' : 'O';
+        squaresS[i] = isX ? 'X' : 'O';
         setState({
             ...state,
             squares: squaresS,
@@ -95,23 +102,20 @@ const Board = () => {
 
     const render = () => {
         const winner = calculateWinner(squares);
+
         if (winner) {
             setState({ ...state, status: 'Winner: ' + winner });
-        } else {
-            setState({ ...state, status: 'Winner: ' + 'Next player: ' + (xIsNext ? 'X' : 'O') });
         }
     }
 
-    const onClickChange = () => {
-        setState({ ...state, xIsNext: !xIsNext })
-        localStorage.setItem('word',!xIsNext);
-    }
+    // const onClickChange = () => {
+    //     chatContext.changeVar(!isX)
+    // }
 
 
     return (
         <div>
             <div>
-                {render}
                 <div className="status">{status}</div>
                 <div className="board-row">
                     {renderSquare(0)}
@@ -129,8 +133,8 @@ const Board = () => {
                     {renderSquare(8)}
                 </div>
             </div>
-            <Button color="primary" onClick={onClickChange} value={xIsNext}>Exit</Button>
-            <h1> {xIsNext ? <div>X</div> : <div>O</div>} </h1>
+            {/* <Button color="primary" onClick={onClickChange} value={isX}>Cambiar</Button> */}
+            <h1> {isX ? <div>X</div> : <div>O</div>} </h1>
         </div>
     );
 }

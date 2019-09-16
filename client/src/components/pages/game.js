@@ -6,11 +6,12 @@ import AlertContext from '../../context/alert/alertContext';
 
 import AuthContext from '../../context/auth/authContext';
 import ChatContext from '../../context/chat/chatContext';
+import packageJson from '../../../package.json';
 
 import Board from '../../components/Game/index';
 
 import io from 'socket.io-client';
-const socket = io('https://obscure-hollows-37712.herokuapp.com');
+var socket = io(packageJson.proxy);
 
 const Game = (props) => {
   const authContext = useContext(AuthContext);
@@ -19,7 +20,7 @@ const Game = (props) => {
 
   const { setAlert } = alertContext;
 
-  const { id_room } = chatContext;
+  const { id_room, isX } = chatContext;
 
   const [user, setUser] = useState({
     text: '',
@@ -30,10 +31,23 @@ const Game = (props) => {
 
   useEffect(() => {
 
+    socket = io(packageJson.proxy);
     authContext.loadUser();
     // eslint-disable-next-line
-  }, []);
 
+    socket.on('whatIs', payload => {
+      chatContext.changeVar(payload.isX)
+    });
+
+    socket.emit('whatIs', {
+      room: id_room,
+      isX:isX
+    });
+    return () =>{
+      socket.close();
+    }
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (id_room === '') {
@@ -46,9 +60,10 @@ const Game = (props) => {
 
   useEffect(() => {
     socket.on('msg-room', payload => {
-      
+
       setUser({ ...user, msg: [...user.msg, payload] });
     });
+
     // eslint-disable-next-line
   }, [msg])
 

@@ -2,12 +2,13 @@ import React, { useContext, useEffect, Fragment, useState } from 'react';
 import AuthContext from '../../context/auth/authContext';
 import ChatContext from '../../context/chat/chatContext';
 import AlertContext from '../../context/alert/alertContext';
+import packageJson from '../../../package.json';
 
 import { ListGroup, ListGroupItem, Button, Input } from 'reactstrap';
 
 
 import io from 'socket.io-client';
-const socket = io('https://obscure-hollows-37712.herokuapp.com');
+const socket = io(packageJson.proxy);
 
 const Home = (props) => {
   const authContext = useContext(AuthContext);
@@ -18,6 +19,7 @@ const Home = (props) => {
   const { id_room } = chatContext;
 
   useEffect(() => {
+    console.log(packageJson)
     authContext.loadUser();
     chatContext.startSession(socket.id);
     // eslint-disable-next-line
