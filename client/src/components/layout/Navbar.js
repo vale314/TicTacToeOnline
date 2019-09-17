@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
 import ContactContext from '../../context/contact/contactContext';
-import ChatContext from '../../context/chat/chatContext';
 
 import {
   Collapse,
@@ -17,38 +16,43 @@ import {
 const NavbarLayout = ({ title, icon }) => {
   const authContext = useContext(AuthContext);
   const contactContext = useContext(ContactContext);
-  const chatContext = useContext(ChatContext);
-
 
   const { isAuthenticated, logout, user } = authContext;
   const { clearContacts } = contactContext;
-  const { socket } = chatContext;
-
 
   const onLogout = () => {
     logout();
     clearContacts();
-
-    console.log(socket)
   };
 
-  const [isOpen, setOpen] = useState({
-    isOpen: true,
+  const [state, setOpen] = useState({
+    isOpen: false,
   });
 
-  const toggle = () =>{
-    setOpen({isOpen:!isOpen})
+  const { isOpen } = state;
+
+  const toggle = () => {
+    setOpen({ isOpen: !isOpen })
   }
 
   const authLinks = (
     <Fragment>
-      <li>Hello {user && user.name}</li>
       <NavItem componentClass='span'>
-        <a onClick={onLogout} href='#!'>
-          <i className='fas fa-sign-out-alt' />{' '}
-          <span className='hide-sm'>Logout</span>
-        </a>
+        <Link to='/messages' >
+          <i class="fas fa-envelope"></i>
+          <span className='hide-sm'>Messages</span>
+        </Link>
       </NavItem>
+    </Fragment>
+  );
+
+  const authLinks2 = (
+    <Fragment>
+        <Link className="mr-5 d-inline-block" to='/' onClick={onLogout}>
+          <i className='fas fa-sign-out-alt' />
+          <span className='hide-sm'>Logout</span>
+        </Link>
+      <div className=" d-inline-block">Hello {user && user.name}</div>
     </Fragment>
   );
 
@@ -63,17 +67,28 @@ const NavbarLayout = ({ title, icon }) => {
     </Fragment>
   );
 
+  const guestLinks2 = (
+    <Fragment>
+     
+    </Fragment>
+  );
+
   return (
     <Navbar color="light" light expand="md">
-      <h1>
-        <Link to='/'>
-          <NavbarBrand href="/">{title}</NavbarBrand>
-        </Link>
-      </h1>
+      <NavItem componentClass='span' style={{ display: 'block' }}>
+        <h1>
+          <Link to='/'>
+            <NavbarBrand href="/">{title}</NavbarBrand>
+          </Link>
+        </h1>
+      </NavItem>
       <NavbarToggler onClick={toggle} />
-      <Collapse isOpen={isOpen} navbar>
-        <Nav >{isAuthenticated ? authLinks : guestLinks}</Nav >
+      <Collapse isOpen={state.isOpen} navbar >
+        <Nav>{isAuthenticated ? authLinks : guestLinks}</Nav >
       </Collapse>
+      <span class="navbar-text" >
+        {isAuthenticated ? authLinks2 : guestLinks2}
+      </span>
     </Navbar >
   );
 };

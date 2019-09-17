@@ -8,7 +8,7 @@ import { ListGroup, ListGroupItem, Button, Input } from 'reactstrap';
 
 
 import io from 'socket.io-client';
-const socket = io(packageJson.proxy);
+var socket = io(packageJson.proxy);
 
 const Home = (props) => {
   const authContext = useContext(AuthContext);
@@ -34,10 +34,18 @@ const Home = (props) => {
   const { users, text } = state;
 
   useEffect(() => {
+    socket = io(packageJson.proxy);
+
     socket.emit('active', {
       token: localStorage.getItem('token'),
       room: 'home'
     });
+    return(()=>{
+      socket.emit('exit', {
+        room: 'home'
+      });
+      socket.close();
+    })
   }, []);
 
   useEffect(() => {

@@ -51,6 +51,7 @@ const Board = () => {
 
     useEffect(()=>{
         render();
+         // eslint-disable-next-line
     },[squares])
 
     const handleClick = (i) => {
