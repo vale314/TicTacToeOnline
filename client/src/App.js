@@ -19,10 +19,10 @@ import MessageState from './context/message/MessageState';
 import ChatState from './context/chat/ChatState';
 import GameOnline from './components/pages/game';
 
+import Canvas from './components/pages/canvas';
 // import './App.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -49,6 +49,7 @@ const App = () => {
                       <Route exact path='/about' component={About} />
                       <Route exact path='/register' component={Register} />
                       <Route exact path='/login' component={Login} />
+                      <Route exact path='/canvas' component={Canvas} />
                     </Switch>
                   </div>
                 </Fragment>
